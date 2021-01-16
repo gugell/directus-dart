@@ -23,76 +23,79 @@ class Filter {
   final dynamic value;
 
   /// Check if the values are equal
-  Filter(this.value) : comparisson = '_eq';
+  Filter.custom(this.value, this.comparisson);
+
+  /// Check if the values are equal
+  Filter(this.value) : comparisson = 'eq';
 
   // Check if at least one filter is true.
   Filter.or(List<Map<String, Filter>> filters)
-      : comparisson = '_or',
+      : comparisson = 'or',
         value = filters;
 
   // Check if at least one filter is true.
   Filter.and(List<Map<String, Filter>> filters)
-      : comparisson = '_and',
+      : comparisson = 'and',
         value = filters;
 
   /// Check if the values are equal.
-  Filter.eq(this.value) : comparisson = '_eq';
+  Filter.eq(this.value) : comparisson = 'eq';
 
   /// Check if the values are not equal.
-  Filter.notEq(this.value) : comparisson = '_neq';
+  Filter.notEq(this.value) : comparisson = 'neq';
 
   /// Check to see if field contains value.
-  Filter.contains(this.value) : comparisson = '_contains';
+  Filter.contains(this.value) : comparisson = 'contains';
 
   /// Check to see if field does not contain value.
-  Filter.notContains(this.value) : comparisson = '_ncontains';
+  Filter.notContains(this.value) : comparisson = 'ncontains';
 
   /// Check to see if value in is provided list.
-  Filter.isIn(List this.value) : comparisson = '_in';
+  Filter.isIn(List this.value) : comparisson = 'in';
 
   /// Check to see if field in not is provided list.
-  Filter.notIn(List this.value) : comparisson = '_nin';
+  Filter.notIn(List this.value) : comparisson = 'nin';
 
   /// Check to see if value is greater then.
-  Filter.gt(this.value) : comparisson = '_gt';
+  Filter.gt(this.value) : comparisson = 'gt';
 
   /// Check to see if value is greater then or equal.
-  Filter.gte(this.value) : comparisson = '_gte';
+  Filter.gte(this.value) : comparisson = 'gte';
 
   /// Check to see if value is less then.
-  Filter.lt(this.value) : comparisson = '_lt';
+  Filter.lt(this.value) : comparisson = 'lt';
 
   /// Check to see if value is less then or equal.
-  Filter.lte(this.value) : comparisson = '_lte';
+  Filter.lte(this.value) : comparisson = 'lte';
 
   /// Check to see if value is empty.
   Filter.empty()
-      : comparisson = '_empty',
+      : comparisson = 'empty',
         value = true;
 
   /// Check to see if value is not empty.
   Filter.notEmpty()
-      : comparisson = '_nempty',
+      : comparisson = 'nempty',
         value = true;
 
   /// Check to see if value is null.
   Filter.isNull()
-      : comparisson = '_null',
+      : comparisson = 'null',
         value = true;
 
   /// Check to see if value is not null.
   Filter.notNull()
-      : comparisson = '_nnull',
+      : comparisson = 'nnull',
         value = true;
 
   /// Check to see if value is between.
   Filter.between(dynamic from, dynamic to)
-      : comparisson = '_between',
+      : comparisson = 'between',
         value = [from, to];
 
   /// Check to see if value is not between.
   Filter.notBetween(dynamic from, dynamic to)
-      : comparisson = '_nbetween',
+      : comparisson = 'nbetween',
         value = [from, to];
 
   /// Convert [Filter][List] to [Map][List].
@@ -113,7 +116,7 @@ class Filter {
   /// That way it can easily be converted to [Map] for passing to [Dio]
   MapEntry<String, dynamic> toMapEntry(String field) {
     // If value is a list of non filters
-    if (comparisson == '_or' || comparisson == '_and') {
+    if (comparisson == 'or' || comparisson == 'and') {
       return MapEntry(comparisson, convertFilterList(value));
     }
     return MapEntry(field, {comparisson: value});
