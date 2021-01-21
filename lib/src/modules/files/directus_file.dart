@@ -36,11 +36,11 @@ class DirectusFile {
   Object? folder;
 
   /// Either [String] or [DirectusUser].
-  Object? uploadedBy;
+  int? uploadedBy;
   DateTime? uploadedOn;
 
   /// Either [String] or [DirectusUser].
-  Object? modifiedBy;
+  int? modifiedBy;
   DateTime? modifiedOn;
   String? charset;
   int? filesize;
@@ -78,7 +78,8 @@ class DirectusFile {
   });
 
   /// Used for code generation
-  factory DirectusFile.fromJson(Map<String, dynamic> json) => _$DirectusFileFromJson(json);
+  factory DirectusFile.fromJson(Map<String, dynamic> json) =>
+      _$DirectusFileFromJson(json);
 
   /// Used for code generation
   Map<String, dynamic> toJson() => _$DirectusFileToJson(this);

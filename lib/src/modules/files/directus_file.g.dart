@@ -15,10 +15,14 @@ DirectusFile _$DirectusFileFromJson(Map<String, dynamic> json) {
     title: json['title'] as String?,
     type: json['type'] as String?,
     folder: json['folder'],
-    uploadedBy: json['uploaded_by'],
-    uploadedOn: json['uploaded_on'] == null ? null : DateTime.parse(json['uploaded_on'] as String),
-    modifiedBy: json['modified_by'],
-    modifiedOn: json['modified_on'] == null ? null : DateTime.parse(json['modified_on'] as String),
+    uploadedBy: json['uploaded_by'] as int?,
+    uploadedOn: json['uploaded_on'] == null
+        ? null
+        : DateTime.parse(json['uploaded_on'] as String),
+    modifiedBy: json['modified_by'] as int?,
+    modifiedOn: json['modified_on'] == null
+        ? null
+        : DateTime.parse(json['modified_on'] as String),
     charset: json['charset'] as String?,
     filesize: json['filesize'] as int?,
     width: json['width'] as int?,
