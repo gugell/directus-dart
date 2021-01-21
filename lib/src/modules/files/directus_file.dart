@@ -50,7 +50,7 @@ class DirectusFile {
   String? embed;
   String? description;
   String? location;
-  String? tags;
+  List<dynamic>? tags;
   Map<String, dynamic>? metadata;
 
   DirectusFile({

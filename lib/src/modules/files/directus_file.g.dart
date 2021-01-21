@@ -27,7 +27,7 @@ DirectusFile _$DirectusFileFromJson(Map<String, dynamic> json) {
     embed: json['embed'] as String?,
     description: json['description'] as String?,
     location: json['location'] as String?,
-    tags: json['tags'] as String?,
+    tags: json['tags'] as List<dynamic>?,
     metadata: json['metadata'] as Map<String, dynamic>?,
   );
 }
