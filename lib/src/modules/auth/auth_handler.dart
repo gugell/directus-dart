@@ -97,12 +97,11 @@ class AuthHandler {
     final data = {
       'email': email,
       'password': password,
-      'mode': 'json',
       if (otp != null) 'otp': otp
     };
 
     try {
-      final dioResponse = await client.post('auth/login', data: data);
+      final dioResponse = await client.post('auth/authenticate', data: data);
       final loginDataResponse = AuthResponse.fromResponse(dioResponse);
       await storage.storeLoginData(loginDataResponse);
 
