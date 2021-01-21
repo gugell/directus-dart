@@ -119,7 +119,7 @@ class AuthHandler {
   Future<void> logout() async {
     if (tokens == null) throw DirectusError(message: 'User is not logged in.');
     try {
-      await client.post('auth/logout', data: {'refresh_token': tokens!.refreshToken});
+      await client.post('auth/logout', data: {'token': tokens!.accessToken});
     } catch (e) {
       throw DirectusError.fromDio(e);
     } finally {
@@ -186,8 +186,7 @@ class AuthHandler {
 
     try {
       final response = await _refreshClient.post('auth/refresh', data: {
-        'mode': 'json',
-        'refresh_token': tokens!.refreshToken,
+        'token': tokens!.accessToken,
       });
       final loginDataResponse = AuthResponse.fromResponse(response);
       await storage.storeLoginData(loginDataResponse);

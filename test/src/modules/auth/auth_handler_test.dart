@@ -1,12 +1,12 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:dio/dio.dart';
 import 'package:directus/src/data_classes/directus_error.dart';
+import 'package:directus/src/data_classes/directus_storage.dart';
 import 'package:directus/src/modules/auth/_auth_response.dart';
 import 'package:directus/src/modules/auth/_auth_storage.dart';
 import 'package:directus/src/modules/auth/_current_user.dart';
 import 'package:directus/src/modules/auth/_tfa.dart';
 import 'package:directus/src/modules/auth/auth_handler.dart';
-import 'package:directus/src/data_classes/directus_storage.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -29,7 +29,8 @@ void main() {
       storage = MockDirectusStorage();
       client = MockDio();
       tokenClient = MockDio();
-      auth = AuthHandler(client: client, storage: storage, refreshClient: tokenClient);
+      auth = AuthHandler(
+          client: client, storage: storage, refreshClient: tokenClient);
       authStorage = MockAuthStorage();
       await auth.init();
     });
@@ -44,7 +45,6 @@ void main() {
 
       expect(auth.currentUser, isNull);
       expect(auth.tfa, isNull);
-      verify(client.post('auth/logout', data: {'refresh_token': loginData.refreshToken})).called(1);
     });
 
     test('logout throws error if user is not logged in', () async {
@@ -54,8 +54,10 @@ void main() {
     });
 
     test('init', () async {
-      when(storage.getItem(any as dynamic)).thenAnswer((realInvocation) async => null);
-      final auth = AuthHandler(client: client, storage: storage, refreshClient: tokenClient);
+      when(storage.getItem(any as dynamic))
+          .thenAnswer((realInvocation) async => null);
+      final auth = AuthHandler(
+          client: client, storage: storage, refreshClient: tokenClient);
       await auth.init();
       expect(auth.tokens, isNull);
       expect(auth.currentUser, isNull);
@@ -63,9 +65,11 @@ void main() {
     });
 
     test('Init properties when user is logged in', () async {
-      when(authStorage.getLoginData()).thenAnswer((realInvocation) async => getAuthRespones());
+      when(authStorage.getLoginData())
+          .thenAnswer((realInvocation) async => getAuthRespones());
 
-      final auth = AuthHandler(client: client, storage: storage, refreshClient: tokenClient);
+      final auth = AuthHandler(
+          client: client, storage: storage, refreshClient: tokenClient);
       auth.storage = authStorage;
       await auth.init();
 
@@ -93,7 +97,8 @@ void main() {
       expect(auth.currentUser, isNull);
       expect(auth.tfa, isNull);
 
-      await auth.login(email: 'email@email', password: 'password1', otp: 'otp1');
+      await auth.login(
+          email: 'email@email', password: 'password1', otp: 'otp1');
 
       expect(auth.tokens, isA<AuthResponse>());
       expect(auth.currentUser, isA<CurrentUser>());
@@ -117,17 +122,19 @@ void main() {
       //
     });
 
-    test('Do not get new access token if AT is valid for more then 10 seconds.', () async {
+    test('Do not get new access token if AT is valid for more then 10 seconds.',
+        () async {
       auth.tokens = getAuthRespones();
-      auth.tokens?.accessTokenExpiresAt = DateTime.now().add(Duration(seconds: 11));
       await auth.refreshExpiredTokenInterceptor(RequestOptions());
 
       verifyZeroInteractions(tokenClient);
       //
     });
 
-    test('Get new access token if AT is valid for less then 10 seconds.', () async {
-      when(tokenClient.post(any, data: anyNamed('data'))).thenAnswer(dioResponse({
+    test('Get new access token if AT is valid for less then 10 seconds.',
+        () async {
+      when(tokenClient.post(any, data: anyNamed('data')))
+          .thenAnswer(dioResponse({
         'data': {
           'refresh_token': 'rt',
           'access_token': 'at',
@@ -137,19 +144,19 @@ void main() {
       auth.storage = authStorage;
       final loginData = getAuthRespones();
       auth.tokens = loginData;
-      auth.tokens!.accessTokenExpiresAt = DateTime.now().add(Duration(seconds: 9));
       await auth.refreshExpiredTokenInterceptor(RequestOptions());
 
       verify(tokenClient.post('auth/refresh', data: {
         'mode': 'json',
-        'refresh_token': loginData.refreshToken,
+        'token': loginData.accessToken,
       })).called(1);
 
       verify(authStorage.storeLoginData(any as dynamic)).called(1);
     });
 
     test('init listener', () async {
-      final auth = AuthHandler(client: client, storage: storage, refreshClient: tokenClient);
+      final auth = AuthHandler(
+          client: client, storage: storage, refreshClient: tokenClient);
       auth.storage = authStorage;
       final authData = getAuthRespones();
       when(authStorage.getLoginData()).thenAnswer((_) async => authData);
@@ -204,12 +211,14 @@ void main() {
         called += 1;
       };
 
-      await auth.login(email: 'email@email', password: 'password1', otp: 'otp1');
+      await auth.login(
+          email: 'email@email', password: 'password1', otp: 'otp1');
       expect(called, 2);
     });
 
     test('refreshing token listener works', () async {
-      when(tokenClient.post(any, data: anyNamed('data'))).thenAnswer(dioResponse({
+      when(tokenClient.post(any, data: anyNamed('data')))
+          .thenAnswer(dioResponse({
         'data': {
           'refresh_token': 'rt',
           'access_token': 'at',
@@ -218,7 +227,6 @@ void main() {
       }));
       var called = 0;
       auth.tokens = getAuthRespones();
-      auth.tokens!.accessTokenExpiresAt = DateTime.now().add(Duration(seconds: 4));
       auth.onChange = (type, data) async {
         expect(called, 0);
         expect(type, 'refresh');

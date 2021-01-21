@@ -22,9 +22,8 @@ class AuthStorage {
   /// This method is used after fetching new data from server,
   Future<void> storeLoginData(AuthResponse data) async {
     await storage.setItem(AuthFields.accessToken, data.accessToken);
-    await storage.setItem(AuthFields.accessTokenTtlInMs, data.accessTokenTtlMs);
-    await storage.setItem(AuthFields.expiresAt, data.accessTokenExpiresAt.toString());
-    await storage.setItem(AuthFields.refreshToken, data.refreshToken);
+    await storage.setItem(
+        AuthFields.expiresAt, data.accessTokenExpiresAt.toString());
   }
 
   /// Store login data to both cold storage and in memory.
@@ -33,23 +32,14 @@ class AuthStorage {
   /// from cold storage and return it.
   Future<AuthResponse?> getLoginData() async {
     final accessToken = await storage.getItem(AuthFields.accessToken);
-    final accessTokenMsValid = await storage.getItem(AuthFields.accessTokenTtlInMs);
     final expiresAtString = await storage.getItem(AuthFields.expiresAt);
-    final refreshToken = await storage.getItem(AuthFields.refreshToken);
-
-    if (accessToken == null ||
-        expiresAtString == null ||
-        accessTokenMsValid == null ||
-        refreshToken == null) {
+    if (accessToken == null) {
       return null;
     }
 
     final loginData = AuthResponse(
-      accessToken: accessToken,
-      accessTokenExpiresAt: DateTime.parse(expiresAtString),
-      accessTokenTtlMs: accessTokenMsValid,
-      refreshToken: refreshToken,
-    );
+        accessToken: accessToken,
+        accessTokenExpiresAt: DateTime.parse(expiresAtString));
 
     return loginData;
   }
