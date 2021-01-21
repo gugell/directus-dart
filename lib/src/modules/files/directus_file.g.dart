@@ -8,7 +8,7 @@ part of 'directus_file.dart';
 
 DirectusFile _$DirectusFileFromJson(Map<String, dynamic> json) {
   return DirectusFile(
-    id: json['id'] as String?,
+    id: json['id'] as int,
     storage: json['storage'] as String?,
     filenameDisk: json['filename_disk'] as String?,
     filenameDownload: json['filename_download'] as String?,

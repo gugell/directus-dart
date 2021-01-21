@@ -25,7 +25,7 @@ class DirectusFile {
     return '$baseUrl/assets/$id';
   }
 
-  String? id;
+  int id;
   String? storage;
   String? filenameDisk;
   String? filenameDownload;
@@ -54,7 +54,7 @@ class DirectusFile {
   Map<String, dynamic>? metadata;
 
   DirectusFile({
-    this.id,
+    required this.id,
     this.storage,
     this.filenameDisk,
     this.filenameDownload,
