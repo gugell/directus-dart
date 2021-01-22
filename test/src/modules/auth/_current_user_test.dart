@@ -38,14 +38,15 @@ void main() {
           'data': {'id': '1', 'first_name': 'Test'}
         }),
       );
-      final testUser = DirectusUser(email: 'test@email.com');
+      final testUser = DirectusUser(id: 1, email: 'test@email.com');
 
       final response = await currentUser.update(data: testUser);
 
       expect(response, isA<DirectusResponse>());
       expect(response.data, isA<DirectusUser>());
       expect(response.data.toJson(), {'id': '1', 'first_name': 'Test'});
-      verify(client.patch('users/me', data: {'email': 'test@email.com'})).called(1);
+      verify(client.patch('users/me', data: {'email': 'test@email.com'}))
+          .called(1);
     });
   });
 }

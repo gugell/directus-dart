@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('UsersConverter', () {
     final converter = UserConverter();
-    final usersMap = converter.toJson(DirectusUser(id: '1'));
+    final usersMap = converter.toJson(DirectusUser(id: 1));
     expect(usersMap, isMap);
     final users = converter.fromJson(usersMap);
     expect(users, isA<DirectusUser>());
