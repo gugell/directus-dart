@@ -10,7 +10,12 @@ environment:
 
 dependencies:
   # Http client
-  dio: ^3.0.0
+  dio:
+    git:
+      url: git@github.com:gugell/dio.git
+      path: dio
+      ref: master
+
   # Storage
   shared_preferences: ">=0.5.12+4 <2.0.0"
   # Annotations
