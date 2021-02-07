@@ -14,7 +14,7 @@ dependencies:
     git:
       url: git@github.com:gugell/dio.git
       path: dio
-      ref: master
+      ref: c27da014856a6439aaa1945a937f66800ab65d26
 
   # Storage
   shared_preferences: ">=0.5.12+4 <2.0.0"
