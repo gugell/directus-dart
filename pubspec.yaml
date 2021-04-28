@@ -17,7 +17,7 @@ dependencies:
       ref: c27da014856a6439aaa1945a937f66800ab65d26
 
   # Storage
-  shared_preferences: ">=0.5.12+4 <2.0.0"
+  shared_preferences:
   # Annotations
   meta: ^1.3.0-nullsafety.6
   # Used for decorators for JSON serialization
