@@ -16,7 +16,8 @@ import '_auth_response.dart';
 /// [type] is either `login`, `logout`, `init` or `refresh`.
 /// [data] is data returned from action. It can be [AuthResponse] for `login`, `init` and `refresh`,
 /// and [Null] for `logout` and `init`. `init` will have value if user is logged in.
-typedef ListenerFunction = Future<void> Function(String type, AuthResponse? data);
+typedef ListenerFunction = Future<void> Function(
+    String type, AuthResponse? data);
 
 class AuthHandler {
   /// Http client
@@ -63,7 +64,8 @@ class AuthHandler {
     // Refresh url is same as normal url.
     _refreshClient.options.baseUrl = client.options.baseUrl;
     // Get new access token if current is expired.
-    client.interceptors.add(InterceptorsWrapper(onRequest: refreshExpiredTokenInterceptor));
+    client.interceptors
+        .add(InterceptorsWrapper(onRequest: refreshExpiredTokenInterceptor));
   }
 
   /// Add listener when auth status changes
@@ -152,12 +154,15 @@ class AuthHandler {
   /// and update token in [client]. If for some reason refreshing fail, it will delete token
   /// from [client].
   @visibleForTesting
-  Future<RequestOptions> refreshExpiredTokenInterceptor(RequestOptions options) async {
+  Future<RequestOptions> refreshExpiredTokenInterceptor(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     // If user is not logged in, just do request normally
     if (tokens == null) return options;
 
     // If there are less then 5 seconds in access token, get new token
-    if (!tokens!.accessTokenExpiresAt.subtract(Duration(seconds: 10)).isBefore(DateTime.now())) {
+    if (!tokens!.accessTokenExpiresAt
+        .subtract(Duration(seconds: 10))
+        .isBefore(DateTime.now())) {
       return options;
     }
 

@@ -45,14 +45,18 @@ class DirectusError implements Exception {
     var errorMessage;
 
     try {
-      final apiErrors = Map.from(error.response.data);
-      errorMessage = apiErrors['errors']?[0]?['message'] ?? 'Problem with Directus.';
+      final apiErrors = Map.from(error.response?.data);
+      errorMessage =
+          apiErrors['errors']?[0]?['message'] ?? 'Problem with Directus.';
     } catch (e) {
       errorMessage = 'Problem with Directus.';
     }
 
     message = errorMessage.toString();
-    code = error.response.statusCode;
-    additionalInfo = {'codeMessage': error.response.statusMessage, 'response': error.response};
+    code = error.response?.statusCode ?? 0;
+    additionalInfo = {
+      'codeMessage': error.response?.statusMessage,
+      'response': error.response
+    };
   }
 }

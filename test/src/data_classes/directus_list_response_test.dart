@@ -1,17 +1,17 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:dio/dio.dart';
 import 'package:directus/src/data_classes/data_classes.dart';
 import 'package:test/test.dart';
 
 void main() {
   test('DirectusListResponse.fromDio works', () async {
-    final response = await DirectusListResponse.fromRequest(() async => Response(
-          data: {
-            'data': [
-              {'hello': 'world'}
-            ]
-          },
-        ));
+    final response =
+        await DirectusListResponse.fromRequest(() async => Response(
+              data: {
+                'data': [
+                  {'hello': 'world'}
+                ]
+              },
+            ));
     expect(response, isA<DirectusListResponse>());
   });
 
