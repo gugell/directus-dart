@@ -154,16 +154,18 @@ class AuthHandler {
   /// and update token in [client]. If for some reason refreshing fail, it will delete token
   /// from [client].
   @visibleForTesting
-  Future<RequestOptions> refreshExpiredTokenInterceptor(
+  Future<void> refreshExpiredTokenInterceptor(
       RequestOptions options, RequestInterceptorHandler handler) async {
     // If user is not logged in, just do request normally
-    if (tokens == null) return options;
+    if (tokens == null) {
+      return handler.next(options);
+    }
 
     // If there are less then 5 seconds in access token, get new token
     if (!tokens!.accessTokenExpiresAt
         .subtract(Duration(seconds: 10))
         .isBefore(DateTime.now())) {
-      return options;
+      return handler.next(options);
     }
 
     final response = await manuallyRefresh();
@@ -172,8 +174,7 @@ class AuthHandler {
     } else {
       options.headers.remove('Authorization');
     }
-
-    return options;
+    return handler.next(options);
   }
 
   /// Refreshes access token.
